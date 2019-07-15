@@ -1,0 +1,42 @@
+From d82d610391eb9e3ebc27217d1889600cec030ff8 Mon Sep 17 00:00:00 2001
+From: xing2387 <xing2387@gmail.com>
+Date: Mon, 15 Jul 2019 12:59:51 +0800
+Subject: [PATCH 1/2] =?UTF-8?q?=E5=8E=BB=E9=99=A4=E2=80=9Cusb=E5=AE=89?=
+ =?UTF-8?q?=E8=A3=85=E2=80=9D=E7=99=BB=E5=BD=95=E8=B4=A6=E5=8F=B7=E6=8F=90?=
+ =?UTF-8?q?=E7=A4=BA?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../permcenter/install/AdbInstallVerifyActivity.smali  | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/com/miui/permcenter/install/AdbInstallVerifyActivity.smali b/com/miui/permcenter/install/AdbInstallVerifyActivity.smali
+index 1a28053..f684ec6 100644
+--- a/com/miui/permcenter/install/AdbInstallVerifyActivity.smali
++++ b/com/miui/permcenter/install/AdbInstallVerifyActivity.smali
+@@ -172,14 +172,16 @@
+     .registers 2
+ 
+     invoke-super {p0, p1}, Lmiui/app/AlertActivity;->onCreate(Landroid/os/Bundle;)V
++    
++    # invoke-static {p0}, Lcom/miui/permcenter/install/s;->eZ(Landroid/content/Context;)Ljava/lang/String;
+ 
+-    invoke-static {p0}, Lcom/miui/permcenter/install/s;->eZ(Landroid/content/Context;)Ljava/lang/String;
++    # move-result-object p1
+ 
+-    move-result-object p1
++    # iput-object p1, p0, Lcom/miui/permcenter/install/AdbInstallVerifyActivity;->aqx:Ljava/lang/String;
+ 
+-    iput-object p1, p0, Lcom/miui/permcenter/install/AdbInstallVerifyActivity;->aqx:Ljava/lang/String;
++    invoke-virtual {p0}, Lcom/miui/permcenter/install/AdbInstallVerifyActivity;->zx()V
+ 
+-    invoke-virtual {p0}, Lcom/miui/permcenter/install/AdbInstallVerifyActivity;->zu()V
++    invoke-virtual {p0}, Lcom/miui/permcenter/install/AdbInstallVerifyActivity;->finish()V
+ 
+     return-void
+ .end method
+-- 
+2.17.1
+

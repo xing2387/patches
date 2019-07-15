@@ -1,0 +1,206 @@
+From 77773cad54fa0fd9db8b3bcb90af3fe20d67aa12 Mon Sep 17 00:00:00 2001
+From: xing2387 <xing2387@gmail.com>
+Date: Mon, 15 Jul 2019 13:21:50 +0800
+Subject: [PATCH 2/2] =?UTF-8?q?=E5=8E=BB=E9=99=A4=E2=80=9C=E5=85=81?=
+ =?UTF-8?q?=E8=AE=B8=E9=80=9A=E8=BF=87USB=E8=B0=83=E8=AF=95=E4=BF=AE?=
+ =?UTF-8?q?=E6=94=B9=E6=9D=83=E9=99=90=E6=88=96=E6=A8=A1=E6=8B=9F=E7=82=B9?=
+ =?UTF-8?q?=E5=87=BB=E2=80=9D=E7=9A=84=E7=99=BB=E5=BD=95=E8=B4=A6=E5=8F=B7?=
+ =?UTF-8?q?=E9=99=90=E5=88=B6?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../install/AdbInputApplyActivity.smali       | 116 +++++++++---------
+ 1 file changed, 61 insertions(+), 55 deletions(-)
+
+diff --git a/com/miui/permcenter/install/AdbInputApplyActivity.smali b/com/miui/permcenter/install/AdbInputApplyActivity.smali
+index 4879988..87d8196 100644
+--- a/com/miui/permcenter/install/AdbInputApplyActivity.smali
++++ b/com/miui/permcenter/install/AdbInputApplyActivity.smali
+@@ -393,114 +393,114 @@
+ 
+     invoke-super {p0, p1}, Lmiui/app/Activity;->onCreate(Landroid/os/Bundle;)V
+ 
+-    invoke-static {p0}, Lcom/miui/permcenter/install/s;->eZ(Landroid/content/Context;)Ljava/lang/String;
++    # invoke-static {p0}, Lcom/miui/permcenter/install/s;->eZ(Landroid/content/Context;)Ljava/lang/String;
+ 
+-    move-result-object p1
++    # move-result-object p1
+ 
+-    invoke-static {p1}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
++    # invoke-static {p1}, Landroid/text/TextUtils;->isEmpty(Ljava/lang/CharSequence;)Z
+ 
+-    move-result p1
++    # move-result p1
+ 
+-    const/4 v0, 0x1
++    # const/4 v0, 0x1
+ 
+-    if-eqz p1, :cond_1f
++    # if-eqz p1, :cond_1f
+ 
+-    new-instance p1, Landroid/content/Intent;
++    # new-instance p1, Landroid/content/Intent;
+ 
+-    const-class v1, Lcom/miui/permcenter/install/AdbInstallVerifyActivity;
++    # const-class v1, Lcom/miui/permcenter/install/AdbInstallVerifyActivity;
+ 
+-    invoke-direct {p1, p0, v1}, Landroid/content/Intent;-><init>(Landroid/content/Context;Ljava/lang/Class;)V
++    # invoke-direct {p1, p0, v1}, Landroid/content/Intent;-><init>(Landroid/content/Context;Ljava/lang/Class;)V
+ 
+-    const-string v1, "is_input"
++    # const-string v1, "is_input"
+ 
+-    invoke-virtual {p1, v1, v0}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Z)Landroid/content/Intent;
++    # invoke-virtual {p1, v1, v0}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Z)Landroid/content/Intent;
+ 
+-    const/4 v0, 0x3
++    # const/4 v0, 0x3
+ 
+-    invoke-virtual {p0, p1, v0}, Lcom/miui/permcenter/install/AdbInputApplyActivity;->startActivityForResult(Landroid/content/Intent;I)V
++    # invoke-virtual {p0, p1, v0}, Lcom/miui/permcenter/install/AdbInputApplyActivity;->startActivityForResult(Landroid/content/Intent;I)V
+ 
+-    return-void
++    # return-void
+ 
+-    :cond_1f
+-    const p1, 0x7f03015e
++    # :cond_1f
++    # const p1, 0x7f03015e
+ 
+-    invoke-virtual {p0, p1}, Lcom/miui/permcenter/install/AdbInputApplyActivity;->setContentView(I)V
++    # invoke-virtual {p0, p1}, Lcom/miui/permcenter/install/AdbInputApplyActivity;->setContentView(I)V
+ 
+-    invoke-direct {p0}, Lcom/miui/permcenter/install/AdbInputApplyActivity;->kw()V
++    # invoke-direct {p0}, Lcom/miui/permcenter/install/AdbInputApplyActivity;->kw()V
+ 
+-    const p1, 0x7f0a03fb
++    # const p1, 0x7f0a03fb
+ 
+-    invoke-virtual {p0, p1}, Lcom/miui/permcenter/install/AdbInputApplyActivity;->findViewById(I)Landroid/view/View;
++    # invoke-virtual {p0, p1}, Lcom/miui/permcenter/install/AdbInputApplyActivity;->findViewById(I)Landroid/view/View;
+ 
+-    move-result-object p1
++    # move-result-object p1
+ 
+-    check-cast p1, Landroid/widget/TextView;
++    # check-cast p1, Landroid/widget/TextView;
+ 
+-    iput-object p1, p0, Lcom/miui/permcenter/install/AdbInputApplyActivity;->aqf:Landroid/widget/TextView;
++    # iput-object p1, p0, Lcom/miui/permcenter/install/AdbInputApplyActivity;->aqf:Landroid/widget/TextView;
+ 
+-    const p1, 0x7f0a03fc
++    # const p1, 0x7f0a03fc
+ 
+-    invoke-virtual {p0, p1}, Lcom/miui/permcenter/install/AdbInputApplyActivity;->findViewById(I)Landroid/view/View;
++    # invoke-virtual {p0, p1}, Lcom/miui/permcenter/install/AdbInputApplyActivity;->findViewById(I)Landroid/view/View;
+ 
+-    move-result-object p1
++    # move-result-object p1
+ 
+-    check-cast p1, Landroid/widget/Button;
++    # check-cast p1, Landroid/widget/Button;
+ 
+-    iput-object p1, p0, Lcom/miui/permcenter/install/AdbInputApplyActivity;->aqg:Landroid/widget/Button;
++    # iput-object p1, p0, Lcom/miui/permcenter/install/AdbInputApplyActivity;->aqg:Landroid/widget/Button;
+ 
+-    iget-object p1, p0, Lcom/miui/permcenter/install/AdbInputApplyActivity;->aqg:Landroid/widget/Button;
++    # iget-object p1, p0, Lcom/miui/permcenter/install/AdbInputApplyActivity;->aqg:Landroid/widget/Button;
+ 
+-    invoke-virtual {p1, p0}, Landroid/widget/Button;->setOnClickListener(Landroid/view/View$OnClickListener;)V
++    # invoke-virtual {p1, p0}, Landroid/widget/Button;->setOnClickListener(Landroid/view/View$OnClickListener;)V
+ 
+-    const p1, 0x7f0a03fd
++    # const p1, 0x7f0a03fd
+ 
+-    invoke-virtual {p0, p1}, Lcom/miui/permcenter/install/AdbInputApplyActivity;->findViewById(I)Landroid/view/View;
++    # invoke-virtual {p0, p1}, Lcom/miui/permcenter/install/AdbInputApplyActivity;->findViewById(I)Landroid/view/View;
+ 
+-    move-result-object p1
++    # move-result-object p1
+ 
+-    check-cast p1, Landroid/widget/Button;
++    # check-cast p1, Landroid/widget/Button;
+ 
+-    iput-object p1, p0, Lcom/miui/permcenter/install/AdbInputApplyActivity;->aqh:Landroid/widget/Button;
++    # iput-object p1, p0, Lcom/miui/permcenter/install/AdbInputApplyActivity;->aqh:Landroid/widget/Button;
+ 
+-    iget-object p1, p0, Lcom/miui/permcenter/install/AdbInputApplyActivity;->aqh:Landroid/widget/Button;
++    # iget-object p1, p0, Lcom/miui/permcenter/install/AdbInputApplyActivity;->aqh:Landroid/widget/Button;
+ 
+-    invoke-virtual {p1, p0}, Landroid/widget/Button;->setOnClickListener(Landroid/view/View$OnClickListener;)V
++    # invoke-virtual {p1, p0}, Landroid/widget/Button;->setOnClickListener(Landroid/view/View$OnClickListener;)V
+ 
+-    iget-object p1, p0, Lcom/miui/permcenter/install/AdbInputApplyActivity;->aqf:Landroid/widget/TextView;
++    # iget-object p1, p0, Lcom/miui/permcenter/install/AdbInputApplyActivity;->aqf:Landroid/widget/TextView;
+ 
+-    iget v1, p0, Lcom/miui/permcenter/install/AdbInputApplyActivity;->aqi:I
++    # iget v1, p0, Lcom/miui/permcenter/install/AdbInputApplyActivity;->aqi:I
+ 
+-    invoke-direct {p0, v1}, Lcom/miui/permcenter/install/AdbInputApplyActivity;->cW(I)Ljava/lang/String;
++    # invoke-direct {p0, v1}, Lcom/miui/permcenter/install/AdbInputApplyActivity;->cW(I)Ljava/lang/String;
+ 
+-    move-result-object v1
++    # move-result-object v1
+ 
+-    invoke-virtual {p1, v1}, Landroid/widget/TextView;->setText(Ljava/lang/CharSequence;)V
++    # invoke-virtual {p1, v1}, Landroid/widget/TextView;->setText(Ljava/lang/CharSequence;)V
+ 
+-    iget-object p1, p0, Lcom/miui/permcenter/install/AdbInputApplyActivity;->aqh:Landroid/widget/Button;
++    # iget-object p1, p0, Lcom/miui/permcenter/install/AdbInputApplyActivity;->aqh:Landroid/widget/Button;
+ 
+-    const v1, 0x7f070684
++    # const v1, 0x7f070684
+ 
+-    new-array v0, v0, [Ljava/lang/Object;
++    # new-array v0, v0, [Ljava/lang/Object;
+ 
+-    iget v2, p0, Lcom/miui/permcenter/install/AdbInputApplyActivity;->aqj:I
++    # iget v2, p0, Lcom/miui/permcenter/install/AdbInputApplyActivity;->aqj:I
+ 
+-    invoke-static {v2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
++    # invoke-static {v2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+ 
+-    move-result-object v2
++    # move-result-object v2
+ 
+-    const/4 v3, 0x0
++    # const/4 v3, 0x0
+ 
+-    aput-object v2, v0, v3
++    # aput-object v2, v0, v3
+ 
+-    invoke-virtual {p0, v1, v0}, Lcom/miui/permcenter/install/AdbInputApplyActivity;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
++    # invoke-virtual {p0, v1, v0}, Lcom/miui/permcenter/install/AdbInputApplyActivity;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
+ 
+-    move-result-object v0
++    # move-result-object v0
+ 
+-    invoke-virtual {p1, v0}, Landroid/widget/Button;->setText(Ljava/lang/CharSequence;)V
++    # invoke-virtual {p1, v0}, Landroid/widget/Button;->setText(Ljava/lang/CharSequence;)V
+ 
+-    iget-object p1, p0, Lcom/miui/permcenter/install/AdbInputApplyActivity;->aqh:Landroid/widget/Button;
++    # iget-object p1, p0, Lcom/miui/permcenter/install/AdbInputApplyActivity;->aqh:Landroid/widget/Button;
+ 
+-    invoke-virtual {p1, v3}, Landroid/widget/Button;->setEnabled(Z)V
++    # invoke-virtual {p1, v3}, Landroid/widget/Button;->setEnabled(Z)V
+ 
+     # iget-object p1, p0, Lcom/miui/permcenter/install/AdbInputApplyActivity;->mHandler:Landroid/os/Handler;
+ 
+@@ -510,6 +510,12 @@
+ 
+     # invoke-virtual {p1, v0, v1, v2}, Landroid/os/Handler;->sendEmptyMessageDelayed(IJ)Z
+ 
++    const/4 v0, 0x1
++
++    invoke-static {v0}, Lcom/miui/permcenter/install/AdbInputApplyActivity;->setEnabled(Z)V
++
++    invoke-virtual {p0}, Lcom/miui/permcenter/install/AdbInputApplyActivity;->finish()V
++
+     return-void
+ .end method
+ 
+-- 
+2.17.1
+
