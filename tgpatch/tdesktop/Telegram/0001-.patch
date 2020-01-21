@@ -1,0 +1,149 @@
+From 3d8f1cb7e552ab397dfc6d98e3490282b5e04f67 Mon Sep 17 00:00:00 2001
+From: xing2387 <xing2387@gmail.com>
+Date: Tue, 21 Jan 2020 17:03:09 +0800
+Subject: [PATCH] =?UTF-8?q?=E5=A2=9E=E5=8A=A0=E5=AF=B9=E5=B7=A6=E5=8F=B3?=
+ =?UTF-8?q?=E4=B8=A4=E8=BE=B9=E9=80=8F=E6=98=8E=E7=9A=84=E8=A1=A8=E6=83=85?=
+ =?UTF-8?q?=E7=9A=84=E7=BC=A9=E7=95=A5=E5=9B=BE=E9=80=82=E9=85=8D?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .gitignore                                    |  4 +++
+ .../chat_helpers/stickers_list_widget.cpp     | 18 ++++++----
+ Telegram/SourceFiles/ui/image/image.cpp       | 36 ++++++++++++++++++-
+ Telegram/SourceFiles/ui/image/image.h         |  4 ++-
+ 4 files changed, 53 insertions(+), 9 deletions(-)
+
+diff --git a/.gitignore b/.gitignore
+index 14f0e1a5d..61e419c8d 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -48,3 +48,7 @@ stage
+ /Linux/
+ /Telegram/Makefile
+ *.*~
++
++.vscode/
++Telegram/.vscode/
++Telegram/command
+\ No newline at end of file
+diff --git a/Telegram/SourceFiles/chat_helpers/stickers_list_widget.cpp b/Telegram/SourceFiles/chat_helpers/stickers_list_widget.cpp
+index 918da350d..3d7f0c7f2 100644
+--- a/Telegram/SourceFiles/chat_helpers/stickers_list_widget.cpp
++++ b/Telegram/SourceFiles/chat_helpers/stickers_list_widget.cpp
+@@ -1699,17 +1699,21 @@ void StickersListWidget::paintSticker(Painter &p, Set &set, int y, int section,
+ 
+ 		set.lottiePlayer->unpause(sticker.animated);
+ 	} else if (const auto image = document->getStickerSmall()) {
++		QPixmap pixmap = image->pixSingle(
++					document->stickerSetOrigin(),
++					w, h, w, h,
++					ImageRoundRadius::None,
++					RectPart::AllCorners,
++					nullptr, true);
++		if (pixmap.width() != w || pixmap.height() != h) {
++			ppos = pos + QPoint((_singleSize.width() - pixmap.width()) / 2, (_singleSize.height() - pixmap.height()) / 2);
++		}
++		
+ 		if (image->loaded()) {
+ 			p.drawPixmapLeft(
+ 				ppos,
+ 				width(),
+-				image->pixSingle(
+-					document->stickerSetOrigin(),
+-					w,
+-					h,
+-					w,
+-					h,
+-					ImageRoundRadius::None));
++				pixmap);
+ 		}
+ 	}
+ 
+diff --git a/Telegram/SourceFiles/ui/image/image.cpp b/Telegram/SourceFiles/ui/image/image.cpp
+index 157f8e016..ea0de1c8b 100644
+--- a/Telegram/SourceFiles/ui/image/image.cpp
++++ b/Telegram/SourceFiles/ui/image/image.cpp
+@@ -735,7 +735,8 @@ const QPixmap &Image::pixSingle(
+ 		int32 outerh,
+ 		ImageRoundRadius radius,
+ 		RectParts corners,
+-		const style::color *colored) const {
++		const style::color *colored,
++		bool cropTransparentMargin) const {
+ 	checkSource();
+ 
+ 	if (w <= 0 || !width() || !height()) {
+@@ -762,6 +763,10 @@ const QPixmap &Image::pixSingle(
+ 	if (colored) {
+ 		options |= Option::Colored;
+ 	}
++	if (cropTransparentMargin) {
++		options |= Option::CropTransparentMargin;
++		options |= Option::TransparentBackground;
++	}
+ 
+ 	auto k = SinglePixKey(options);
+ 	auto i = _sizesCache.constFind(k);
+@@ -843,6 +848,35 @@ QPixmap Image::pixNoCache(
+ 		return Empty()->pixNoCache(origin, w, h, options, outerw, outerh);
+ 	}
+ 
++	int cropMarginX = 0;
++	if ((options & Option::CropTransparentMargin) && 
++		(_data.format() == QImage::Format_ARGB32 || _data.format() == QImage::Format_ARGB32_Premultiplied) && 
++		_data.width() > 32 && _data.height() > 1 && w > h) {
++		int lastX = 0;
++		int step = _data.width() >> 5;
++		int i = 1;
++		uchar *line = _data.scanLine(0);
++		while (i < 16) {
++			uchar alpha = line[i * step * 4 + 3];
++			if (alpha == 0) {
++				lastX = i * step;
++			} else {
++				cropMarginX = lastX;
++				break;
++			}
++			i++;
++		}
++		// qCritical() <<"============= ljx === "<< "w=" <<w<<", _data.width()="<<_data.width()<<", cropMarginX="<<cropMarginX<<", lastX="<<lastX;
++		int newW = _data.width() - cropMarginX - cropMarginX;
++		float scale = _data.width() * ((float)1) / newW;
++		w = (int)(w * scale);
++		h = (int)(h * scale);
++		if (outerh > 0) {
++			outerh = h;
++		}
++		
++	}
++
+ 	if (isNull() && outerw > 0 && outerh > 0) {
+ 		outerw *= cIntRetinaFactor();
+ 		outerh *= cIntRetinaFactor();
+diff --git a/Telegram/SourceFiles/ui/image/image.h b/Telegram/SourceFiles/ui/image/image.h
+index 5d0352076..ea4338ed0 100644
+--- a/Telegram/SourceFiles/ui/image/image.h
++++ b/Telegram/SourceFiles/ui/image/image.h
+@@ -8,6 +8,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ #pragma once
+ 
+ #include "ui/image/image_prepare.h"
++#include <QDebug>
+ 
+ class HistoryItem;
+ 
+@@ -135,7 +136,8 @@ public:
+ 		int32 outerh,
+ 		ImageRoundRadius radius,
+ 		RectParts corners = RectPart::AllCorners,
+-		const style::color *colored = nullptr) const;
++		const style::color *colored = nullptr,
++		bool cropTransparentMargin = false) const;
+ 	const QPixmap &pixBlurredSingle(
+ 		Data::FileOrigin origin,
+ 		int32 w,
+-- 
+2.17.1
+
